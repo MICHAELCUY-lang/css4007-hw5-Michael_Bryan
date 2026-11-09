@@ -74,6 +74,8 @@ tool requests and results, memory reads, replies, and the loop limit flag.
 The runner copies fictional drafts into the specified output folder before
 discarding temporary databases. Use a fresh output directory for a fresh replay.
 Pytest uses a deterministic fake model and needs no key.
+For a keyless rehearsal of all scenarios, pass `--offline` to the runner.
+Those logs label model responses as scripted fake responses.
 
 ## Storage and reset
 

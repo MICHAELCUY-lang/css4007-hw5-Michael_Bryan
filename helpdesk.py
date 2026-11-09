@@ -51,6 +51,8 @@ def parser() -> argparse.ArgumentParser:
             sub.add_argument("--user", required=True)
             sub.add_argument("--thread", required=True)
             sub.add_argument("--trace", action="store_true")
+        else:
+            sub.add_argument("--offline", action="store_true", help=argparse.SUPPRESS)
     return root
 
 
@@ -65,11 +67,16 @@ def main() -> None:
 
     from agent import HelpdeskSession
 
-    try:
-        settings = model_settings()
-    except ValueError as error:
-        options.error(str(error))
-    model = create_model(settings)
+    if args.command == "worker" and args.offline:
+        from offline_model import OfflineScenarioModel
+
+        model = OfflineScenarioModel()
+    else:
+        try:
+            settings = model_settings()
+        except ValueError as error:
+            options.error(str(error))
+        model = create_model(settings)
 
     if args.command == "worker":
         for line in sys.stdin:

@@ -1,8 +1,11 @@
 """Replay fixture events and record observed traces, including real process restarts."""
 import argparse
 import json
+import os
+import shutil
 import subprocess
 import sys
+from contextlib import ExitStack
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -21,10 +24,13 @@ def write_log(directory: Path, name: str, value: dict) -> None:
     )
 
 
-def run_worker(events: list[dict], profile: str, storage: Path) -> list[dict]:
+def run_worker(events: list[dict], profile: str, storage: Path, offline: bool = False) -> list[dict]:
+    command = [sys.executable, str(ROOT / "helpdesk.py"), "worker",
+               "--profile", profile, "--storage", str(storage)]
+    if offline:
+        command.append("--offline")
     process = subprocess.run(
-        [sys.executable, str(ROOT / "helpdesk.py"), "worker", "--profile", profile,
-         "--storage", str(storage)],
+        command,
         input="".join(json.dumps(event) + "\n" for event in events),
         text=True, encoding="utf-8", capture_output=True, check=False,
     )
@@ -34,7 +40,7 @@ def run_worker(events: list[dict], profile: str, storage: Path) -> list[dict]:
     return [{**event, **result} for event, result in zip(events, results, strict=True)]
 
 
-def run_scenario(scenario: dict, storage: Path) -> dict:
+def run_scenario(scenario: dict, storage: Path, offline: bool = False) -> dict:
     log = {key: scenario[key] for key in ("id", "title", "part", "status_profile", "reset_before")}
     profile = scenario["status_profile"]
     if scenario["part"] == 1:
@@ -46,20 +52,37 @@ def run_scenario(scenario: dict, storage: Path) -> dict:
         ]
         return log
 
-    settings = model_settings()
-    log["model"] = settings["model"]
-    log["provider"] = "OpenAI-compatible endpoint" if settings["base_url"] else "OpenAI"
+    if offline:
+        log.update(model="OfflineScenarioModel", provider="Scripted fake (no LLM)")
+    else:
+        settings = model_settings()
+        log.update(model=settings["model"], provider=model_provider(settings))
     log["events"] = []
     batch = []
     for event in scenario["events"]:
         if event["action"] == "restart_process":
-            log["events"].extend(run_worker(batch, profile, storage))
+            log["events"].extend(run_worker(batch, profile, storage, offline))
             log["events"].append({**event, "observed": "Worker exited; next worker opens the same storage."})
             batch.clear()
         else:
             batch.append(event)
-    log["events"].extend(run_worker(batch, profile, storage))
+    log["events"].extend(run_worker(batch, profile, storage, offline))
     return log
+
+
+def model_provider(settings: dict) -> str:
+    if settings["base_url"]:
+        return os.environ.get("MODEL_PROVIDER") or "OpenAI-compatible endpoint"
+    return "OpenAI"
+
+
+def archive_drafts(storage: Path, directory: Path) -> list[str]:
+    paths = []
+    for draft in sorted((storage / "tickets").glob("DEMO-*.json")):
+        directory.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(draft, directory / draft.name)
+        paths.append(f"drafts/{directory.name}/{draft.name}")
+    return paths
 
 
 def main() -> None:
@@ -69,6 +92,7 @@ def main() -> None:
     parser.add_argument("ids", nargs="*", metavar="ID", help="Scenario IDs, or omit to run all.")
     parser.add_argument("--output", type=Path, default=ROOT / "outputs")
     parser.add_argument("--direct-tools", action="store_true", help="Also save direct calls without a model.")
+    parser.add_argument("--offline", action="store_true", help="Rehearse with a scripted fake instead of an LLM.")
     args = parser.parse_args()
     for scenario_id in args.ids:
         if scenario_id not in scenarios:
@@ -85,17 +109,21 @@ def main() -> None:
             )
             write_log(args.output, "direct-tools", {
                 "find_instructions": guide, "check_service_status": status, "prepare_ticket": draft,
+                "archived_drafts": archive_drafts(Path(storage), args.output / "drafts" / "direct-tools"),
             })
 
-    with TemporaryDirectory() as shared_storage:
+    with ExitStack() as storage_context:
+        storage = Path(storage_context.enter_context(TemporaryDirectory()))
         for scenario_id in args.ids or scenarios:
             scenario = scenarios[scenario_id]
             print(f"Running {scenario_id}", flush=True)
             if scenario["reset_before"]:
-                with TemporaryDirectory() as clean_storage:
-                    log = run_scenario(scenario, Path(clean_storage))
-            else:
-                log = run_scenario(scenario, Path(shared_storage))
+                storage_context.close()
+                storage = Path(storage_context.enter_context(TemporaryDirectory()))
+            log = run_scenario(scenario, storage, args.offline)
+            drafts = archive_drafts(storage, args.output / "drafts" / scenario_id)
+            if drafts:
+                log["archived_drafts"] = drafts
             write_log(args.output, scenario_id, log)
             print(f"Saved {scenario_id}.json", flush=True)
 

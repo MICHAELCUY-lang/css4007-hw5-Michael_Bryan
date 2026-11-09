@@ -193,6 +193,7 @@ class HelpdeskSession:
 
     def execute_tools(self, state: AgentState) -> dict:
         results = []
+        saved_draft = None
         # A ticket must depend on an earlier model/tool round, even if a provider
         # returns several requests in one batch.
         for call in state["messages"][-1].tool_calls:
@@ -206,7 +207,12 @@ class HelpdeskSession:
                 except ValidationError:
                     result = {"error": "Missing or invalid tool arguments."}
                 else:
-                    result = self.run_tool(name, args, state["messages"])
+                    if name == "prepare_ticket" and saved_draft is not None:
+                        result = saved_draft
+                    else:
+                        result = self.run_tool(name, args, state["messages"])
+                        if name == "prepare_ticket" and "ticket" in result:
+                            saved_draft = result
             results.append(ToolMessage(
                 content=json.dumps(result, ensure_ascii=False),
                 name=name, tool_call_id=call["id"],

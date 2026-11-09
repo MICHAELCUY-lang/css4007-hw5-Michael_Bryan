@@ -1,0 +1,169 @@
+{
+  "id": "S13",
+  "title": "Do not share memory between users",
+  "part": 3,
+  "status_profile": "normal",
+  "reset_before": true,
+  "model": "Qwen3-0.6B-Q4_K_M",
+  "provider": "llama.cpp b12224 (local, reasoning enabled)",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "isolation-a",
+      "message": "Please remember that I prefer replies in Kazakh. I have a Wi-Fi problem.",
+      "pid": 8560,
+      "reply": "Wi-Fi problem? Here's what you can do:\n\n1. **Check Wi-Fi Status**: Ensure your device is connected to the campus network. Turn off airplane mode and check if the signal is strong.\n2. **Select the Network**: Choose the \"Campus-Demo\" network from the available options.\n3. **Retry Connection**: If the connection fails, try reconnecting by forgetting the saved network and selecting the new one.\n\nLet me know if you need further assistance!",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": "Kazakh",
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "find_instructions",
+                    "args": {
+                      "topic": "wifi"
+                    },
+                    "id": "1E0KxCdvUCnh3wCMLrlgZIKGOxDCenWb",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/helpdesk.json\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\"}",
+                "name": "find_instructions",
+                "tool_call_id": "1E0KxCdvUCnh3wCMLrlgZIKGOxDCenWb"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "find_instructions",
+                    "args": {
+                      "topic": "wifi"
+                    },
+                    "id": "f4zL4ww9Iwq7nxlFlho8dXwaniND2pfT",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/helpdesk.json\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\"}",
+                "name": "find_instructions",
+                "tool_call_id": "f4zL4ww9Iwq7nxlFlho8dXwaniND2pfT"
+              }
+            ],
+            "tool_rounds": 2
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Wi-Fi problem? Here's what you can do:\n\n1. **Check Wi-Fi Status**: Ensure your device is connected to the campus network. Turn off airplane mode and check if the signal is strong.\n2. **Select the Network**: Choose the \"Campus-Demo\" network from the available options.\n3. **Retry Connection**: If the connection fails, try reconnecting by forgetting the saved network and selecting the new one.\n\nLet me know if you need further assistance!",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {}
+        }
+      ]
+    },
+    {
+      "action": "message",
+      "user_id": "demo-user-b",
+      "thread_id": "isolation-b",
+      "message": "Have I told you a preferred language or a previous problem?",
+      "pid": 8560,
+      "reply": "I don't have a preferred language or a saved history of previous questions. Could you please share the problem and steps you've already tried, and I'll help you draft a ticket if needed?",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-b"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "I don't have a preferred language or a saved history of previous questions. Could you please share the problem and steps you've already tried, and I'll help you draft a ticket if needed?",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {}
+        }
+      ]
+    }
+  ]
+}

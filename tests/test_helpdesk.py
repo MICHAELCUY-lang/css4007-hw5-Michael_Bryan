@@ -103,10 +103,19 @@ def test_conditional_ticket_uses_tool_result(tmp_path, profile, should_draft):
     session = HelpdeskSession(FakeModel(attempt_ticket), tmp_path, "demo-user-a", "t", profile)
     with session.connect():
         result = session.turn("Wi-Fi disconnected after reconnecting. Check status. If it is operating, draft a ticket.")
-    assert result["reply"] == ("Saved" if should_draft else "Blocked")
+    if profile == "normal":
+        assert "no reported outage" in result["reply"]
+        assert "Local draft saved as tickets/" in result["reply"]
+        assert "Nothing was sent" in result["reply"]
+    elif profile == "wifi_outage":
+        assert "unavailable across campus" in result["reply"]
+        assert "no draft was saved" in result["reply"]
+    else:
+        assert "status source is unavailable" in result["reply"]
+        assert "cannot confirm that it is operating" in result["reply"]
     assert bool(list((tmp_path / "tickets").glob("*.json"))) == should_draft
     assert [entry["node"] for entry in result["trace"]] == [
-        "read_memory", "model", "tools", "model", "tools", "model",
+        "read_memory", "model", "tools", "model", "tools", "model", "report",
     ]
 
 

@@ -1,0 +1,34 @@
+{
+  "id": "S01",
+  "title": "Simple Wi-Fi route",
+  "part": 1,
+  "status_profile": "normal",
+  "reset_before": true,
+  "graph_variant": "original",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s01",
+      "message": "I cannot connect to Wi-Fi.",
+      "trace": [
+        {
+          "node": "read_request",
+          "state": {
+            "message": "I cannot connect to Wi-Fi.",
+            "category": "wifi"
+          }
+        },
+        {
+          "node": "wifi_help",
+          "state": {
+            "message": "I cannot connect to Wi-Fi.",
+            "category": "wifi",
+            "reply": "Connect to the practice campus network\n1. Check that Wi-Fi is enabled and airplane mode is off.\n2. Select the fictional Campus-Demo network.\n3. If connection fails, forget the saved network and try connecting again.\n4. If the problem remains, check the service status before preparing a ticket."
+          }
+        }
+      ],
+      "reply": "Connect to the practice campus network\n1. Check that Wi-Fi is enabled and airplane mode is off.\n2. Select the fictional Campus-Demo network.\n3. If connection fails, forget the saved network and try connecting again.\n4. If the problem remains, check the service status before preparing a ticket."
+    }
+  ]
+}

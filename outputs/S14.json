@@ -1,0 +1,90 @@
+{
+  "id": "S14",
+  "title": "Password recovery outage",
+  "part": 2,
+  "status_profile": "recovery_outage",
+  "reset_before": true,
+  "model": "Qwen3-0.6B-Q4_K_M",
+  "provider": "llama.cpp b12224 (local, reasoning enabled)",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s14",
+      "message": "My password recovery page is unavailable. Check the service status. Is there a known problem?",
+      "pid": 26148,
+      "reply": "The demo account-recovery service is currently unavailable. The fixture provides no repair time, indicating a service outage. Please check the status again or consider alternative methods for assistance.",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "check_service_status",
+                    "args": {
+                      "service": "account_recovery"
+                    },
+                    "id": "xoQc9TXM7llFLdlAXxOShJoig6AjD4K8",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/service_status.json\", \"profile\": \"recovery_outage\", \"service\": \"account_recovery\", \"status\": \"outage\", \"message\": \"The demo account-recovery service is unavailable. The fixture gives no repair time.\"}",
+                "name": "check_service_status",
+                "tool_call_id": "xoQc9TXM7llFLdlAXxOShJoig6AjD4K8"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "The demo account-recovery service is currently unavailable. The fixture provides no repair time, indicating a service outage. Please check the status again or consider alternative methods for assistance.",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {}
+        }
+      ]
+    }
+  ]
+}

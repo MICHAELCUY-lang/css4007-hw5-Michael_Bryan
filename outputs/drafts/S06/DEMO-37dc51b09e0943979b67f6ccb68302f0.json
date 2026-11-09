@@ -1,0 +1,17 @@
+{
+  "ticket_id": "DEMO-37dc51b09e0943979b67f6ccb68302f0",
+  "status": "draft",
+  "user_id": "demo-user-a",
+  "thread_id": "s06",
+  "category": "wifi",
+  "summary": "Wi-Fi connectivity issue after forgetting the saved network",
+  "steps_tried": [
+    "Enabled Wi-Fi",
+    "Forgotten the saved network"
+  ],
+  "service_status": "operational",
+  "status_profile": "normal",
+  "reference_ids": [
+    "GUIDE-WIFI"
+  ]
+}

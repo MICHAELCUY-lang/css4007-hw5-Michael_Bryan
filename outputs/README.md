@@ -1,5 +1,10 @@
-# Save your own results here
+# Recorded runs
 
-Commit small text or JSON logs for the supplied scenarios. Start each log with its scenario identifier and record the command, snapshot, user and thread. Include your actual node/tool trace and final reply. Keep local ticket drafts here if they contain only invented demo data. Store live memory under the ignored local-storage directory.
-
-This starter contains no completed runs. Do not present the illustrative conversations from SCENARIOS.md as results from your code.
+Each `S*.json` file records a fixture scenario run by `run_scenarios.py`.
+S06–S14 were recorded with Qwen3-0.6B-Q4_K_M through a local llama.cpp
+b12224 endpoint with reasoning and tool calling enabled.
+`direct-tools.json` records calls made without a model. The logs show fictional
+inputs, execution paths, tool decisions, and persisted context.
+Archived drafts live under `drafts/`; their names match the files returned by
+the draft tool. The temporary checkpoint databases are discarded.
+See [SUBMISSION.md](../SUBMISSION.md) for the scenario-by-scenario analysis.

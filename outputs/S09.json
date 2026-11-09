@@ -1,0 +1,152 @@
+{
+  "id": "S09",
+  "title": "Missing ticket details",
+  "part": 2,
+  "status_profile": "normal",
+  "reset_before": true,
+  "model": "Qwen3-0.6B-Q4_K_M",
+  "provider": "llama.cpp b12224 (local, reasoning enabled)",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s09",
+      "message": "Prepare a support ticket.",
+      "pid": 24900,
+      "reply": "I'll need more details to prepare a ticket. Could you please describe the issue and the steps you've already taken?",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "I'll need more details to prepare a ticket. Could you please describe the issue and the steps you've already taken?",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {}
+        }
+      ]
+    },
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s09",
+      "message": "The issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "pid": 24900,
+      "reply": "Local draft saved as tickets/DEMO-a54bd08074ab445f813f958da9b342ef.json. Nothing was sent.",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [
+                "Prepare a support ticket."
+              ],
+              "prior_message_count": 2
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "prepare_ticket",
+                    "args": {
+                      "category": "wifi",
+                      "summary": "The user enabled Wi-Fi and attempted to reconnect, but it still failed.",
+                      "steps_tried": [
+                        "Enabled Wi-Fi",
+                        "Attempted to reconnect"
+                      ]
+                    },
+                    "id": "L7murJwQLfkEk61igrfcQOqUjf2J2pGz",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"file\": \"tickets/DEMO-a54bd08074ab445f813f958da9b342ef.json\", \"ticket\": {\"ticket_id\": \"DEMO-a54bd08074ab445f813f958da9b342ef\", \"status\": \"draft\", \"user_id\": \"demo-user-a\", \"thread_id\": \"s09\", \"category\": \"wifi\", \"summary\": \"The user enabled Wi-Fi and attempted to reconnect, but it still failed.\", \"steps_tried\": [\"Enabled Wi-Fi\", \"Attempted to reconnect\"], \"service_status\": \"not_checked\", \"status_profile\": \"normal\", \"reference_ids\": []}, \"sent\": false}",
+                "name": "prepare_ticket",
+                "tool_call_id": "L7murJwQLfkEk61igrfcQOqUjf2J2pGz"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "The ticket has been saved as `tickets/DEMO-a54bd08074ab445f813f958da9b342ef.json`. You can proceed with reporting this file.",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Local draft saved as tickets/DEMO-a54bd08074ab445f813f958da9b342ef.json. Nothing was sent.",
+                "tool_calls": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "archived_drafts": [
+    "drafts/S09/DEMO-a54bd08074ab445f813f958da9b342ef.json"
+  ]
+}

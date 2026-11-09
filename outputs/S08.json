@@ -1,0 +1,98 @@
+{
+  "id": "S08",
+  "title": "Status source unavailable",
+  "part": 2,
+  "status_profile": "status_unavailable",
+  "reset_before": true,
+  "model": "Qwen3-0.6B-Q4_K_M",
+  "provider": "llama.cpp b12224 (local, reasoning enabled)",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s08",
+      "message": "Check whether Wi-Fi is down. If it is operating, prepare a ticket. I already enabled Wi-Fi and reconnected, with no success.",
+      "pid": 14828,
+      "reply": "The demo Wi-Fi status source is unavailable. I cannot confirm that it is operating. Would you like a draft that records the unknown status?",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "check_service_status",
+                    "args": {
+                      "service": "wifi"
+                    },
+                    "id": "yjLDvlvG2YsNMf7JPHAIQkmcCdKNAP4E",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/service_status.json\", \"profile\": \"status_unavailable\", \"service\": \"wifi\", \"status\": \"unknown\", \"message\": \"The demo Wi-Fi status source is unavailable.\"}",
+                "name": "check_service_status",
+                "tool_call_id": "yjLDvlvG2YsNMf7JPHAIQkmcCdKNAP4E"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "The status indicates the Wi-Fi service is not operational. Since the service is unavailable, we cannot prepare a ticket yet. Please confirm if you have any additional details or if there's anything else you'd like to include.",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "The demo Wi-Fi status source is unavailable. I cannot confirm that it is operating. Would you like a draft that records the unknown status?",
+                "tool_calls": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "id": "S06",
+  "title": "Instructions then local ticket",
+  "part": 2,
+  "status_profile": "normal",
+  "reset_before": true,
+  "model": "Qwen3-0.6B-Q4_K_M",
+  "provider": "llama.cpp b12224 (local, reasoning enabled)",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s06",
+      "message": "Show me the Wi-Fi troubleshooting steps.",
+      "pid": 26356,
+      "reply": "Here are the Wi-Fi troubleshooting steps from the guide:\n\n1. **Check that Wi-Fi is enabled and airplane mode is off.**  \n2. **Select the fictional Campus-Demo network.**  \n3. **If connection fails, forget the saved network and try connecting again.**  \n4. **If the problem remains, check the service status before preparing a ticket.**\n\nLet me know if you need further assistance!",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "find_instructions",
+                    "args": {
+                      "topic": "wifi"
+                    },
+                    "id": "adku29oLsLu3w4KapLCwMm7eIW4tVRhx",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/helpdesk.json\", \"title\": \"Connect to the practice campus network\", \"steps\": [\"Check that Wi-Fi is enabled and airplane mode is off.\", \"Select the fictional Campus-Demo network.\", \"If connection fails, forget the saved network and try connecting again.\", \"If the problem remains, check the service status before preparing a ticket.\"], \"instruction_id\": \"GUIDE-WIFI\"}",
+                "name": "find_instructions",
+                "tool_call_id": "adku29oLsLu3w4KapLCwMm7eIW4tVRhx"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Here are the Wi-Fi troubleshooting steps from the guide:\n\n1. **Check that Wi-Fi is enabled and airplane mode is off.**  \n2. **Select the fictional Campus-Demo network.**  \n3. **If connection fails, forget the saved network and try connecting again.**  \n4. **If the problem remains, check the service status before preparing a ticket.**\n\nLet me know if you need further assistance!",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {}
+        }
+      ]
+    },
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "s06",
+      "message": "I enabled Wi-Fi and forgot the saved network, but Campus-Demo still will not connect. Check whether Wi-Fi is down. If it is operating, prepare a ticket about this problem.",
+      "pid": 26356,
+      "reply": "The demo Wi-Fi service has no reported outage. Local draft saved as tickets/DEMO-37dc51b09e0943979b67f6ccb68302f0.json. Nothing was sent.",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": null,
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [
+                "Show me the Wi-Fi troubleshooting steps."
+              ],
+              "prior_message_count": 4
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "check_service_status",
+                    "args": {
+                      "service": "wifi"
+                    },
+                    "id": "96grZtOszEcDuQHZvS07KrqhMNTONr9I",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/service_status.json\", \"profile\": \"normal\", \"service\": \"wifi\", \"status\": \"operational\", \"message\": \"The demo Wi-Fi service has no reported outage.\"}",
+                "name": "check_service_status",
+                "tool_call_id": "96grZtOszEcDuQHZvS07KrqhMNTONr9I"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "prepare_ticket",
+                    "args": {
+                      "category": "wifi",
+                      "summary": "Wi-Fi connectivity issue after forgetting the saved network",
+                      "steps_tried": [
+                        "Enabled Wi-Fi",
+                        "Forgotten the saved network"
+                      ],
+                      "requires_operational": true
+                    },
+                    "id": "GwiGkbtSZKwpOu0nMORtv0ZK9H7O00aW",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"file\": \"tickets/DEMO-37dc51b09e0943979b67f6ccb68302f0.json\", \"ticket\": {\"ticket_id\": \"DEMO-37dc51b09e0943979b67f6ccb68302f0\", \"status\": \"draft\", \"user_id\": \"demo-user-a\", \"thread_id\": \"s06\", \"category\": \"wifi\", \"summary\": \"Wi-Fi connectivity issue after forgetting the saved network\", \"steps_tried\": [\"Enabled Wi-Fi\", \"Forgotten the saved network\"], \"service_status\": \"operational\", \"status_profile\": \"normal\", \"reference_ids\": [\"GUIDE-WIFI\"]}, \"sent\": false}",
+                "name": "prepare_ticket",
+                "tool_call_id": "GwiGkbtSZKwpOu0nMORtv0ZK9H7O00aW"
+              }
+            ],
+            "tool_rounds": 2
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Here is your prepared ticket:\n\n**Ticket ID:** DEMO-37dc51b09e0943979b67f6ccb68302f0  \n**Status:** Draft  \n**Category:** wifi  \n**Summary:** Wi-Fi connectivity issue after forgetting the saved network  \n**Steps Tried:**  \n- Enabled Wi-Fi  \n- Forgotten the saved network  \n\nThe service status confirms it is operational, so a ticket has been prepared. Let me know if you'd like to proceed with saving this ticket.",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "The demo Wi-Fi service has no reported outage. Local draft saved as tickets/DEMO-37dc51b09e0943979b67f6ccb68302f0.json. Nothing was sent.",
+                "tool_calls": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "archived_drafts": [
+    "drafts/S06/DEMO-37dc51b09e0943979b67f6ccb68302f0.json"
+  ]
+}

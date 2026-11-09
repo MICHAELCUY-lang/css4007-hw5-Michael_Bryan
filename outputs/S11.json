@@ -1,0 +1,149 @@
+{
+  "id": "S11",
+  "title": "Persist and recall after restart",
+  "part": 3,
+  "status_profile": "normal",
+  "reset_before": true,
+  "model": "Qwen3-0.6B-Q4_K_M",
+  "provider": "llama.cpp b12224 (local, reasoning enabled)",
+  "events": [
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "restart-a",
+      "message": "Please remember that I prefer replies in Kazakh. My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "pid": 15476,
+      "reply": "Wi-Fi service is operational. If you still have issues after enabling it, please let me know if there are any specific steps you've taken.",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": "Kazakh",
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [],
+              "prior_message_count": 0
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "",
+                "tool_calls": [
+                  {
+                    "name": "check_service_status",
+                    "args": {
+                      "service": "wifi"
+                    },
+                    "id": "JCtaT0QYwxdKpZpW3GvmoWi4F281Ev1P",
+                    "type": "tool_call"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": "tools",
+          "update": {
+            "messages": [
+              {
+                "type": "tool",
+                "content": "{\"source\": \"data/service_status.json\", \"profile\": \"normal\", \"service\": \"wifi\", \"status\": \"operational\", \"message\": \"The demo Wi-Fi service has no reported outage.\"}",
+                "name": "check_service_status",
+                "tool_call_id": "JCtaT0QYwxdKpZpW3GvmoWi4F281Ev1P"
+              }
+            ],
+            "tool_rounds": 1
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Wi-Fi service is operational. If you still have issues after enabling it, please let me know if there are any specific steps you've taken.",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {}
+        }
+      ]
+    },
+    {
+      "action": "restart_process",
+      "preserve_local_storage": true,
+      "observed": "Worker exited; next worker opens the same storage."
+    },
+    {
+      "action": "message",
+      "user_id": "demo-user-a",
+      "thread_id": "restart-a",
+      "message": "Which problem and steps did we discuss?",
+      "pid": 17080,
+      "reply": "Алдыңғы хабарламаңызда былай дедіңіз\n\n> My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+      "limit_reached": false,
+      "trace": [
+        {
+          "node": "read_memory",
+          "update": {
+            "language": "Kazakh",
+            "tool_rounds": 0,
+            "limit_reached": false,
+            "user_memory": {
+              "source": "preferences.sqlite3",
+              "user_id": "demo-user-a"
+            },
+            "conversation_memory": {
+              "source": "conversations.sqlite3",
+              "prior_user_messages": [
+                "Please remember that I prefer replies in Kazakh. My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails."
+              ],
+              "prior_message_count": 4
+            }
+          }
+        },
+        {
+          "node": "model",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Wi-Fi service is operational. The problem is that you tried to enable and reconnect Wi-Fi, but it still fails. Let me know if there are any specific steps you've taken.",
+                "tool_calls": []
+              }
+            ]
+          }
+        },
+        {
+          "node": "report",
+          "update": {
+            "messages": [
+              {
+                "type": "ai",
+                "content": "Алдыңғы хабарламаңызда былай дедіңіз\n\n> My issue is Wi-Fi. I enabled it and tried reconnecting, but it still fails.",
+                "tool_calls": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

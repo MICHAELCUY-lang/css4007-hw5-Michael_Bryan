@@ -1,0 +1,43 @@
+{
+  "find_instructions": {
+    "source": "data/helpdesk.json",
+    "title": "Connect to the practice campus network",
+    "steps": [
+      "Check that Wi-Fi is enabled and airplane mode is off.",
+      "Select the fictional Campus-Demo network.",
+      "If connection fails, forget the saved network and try connecting again.",
+      "If the problem remains, check the service status before preparing a ticket."
+    ],
+    "instruction_id": "GUIDE-WIFI"
+  },
+  "check_service_status": {
+    "source": "data/service_status.json",
+    "profile": "normal",
+    "service": "wifi",
+    "status": "operational",
+    "message": "The demo Wi-Fi service has no reported outage."
+  },
+  "prepare_ticket": {
+    "file": "tickets/DEMO-dd29a05a233c4a368ddd7035d79df160.json",
+    "ticket": {
+      "ticket_id": "DEMO-dd29a05a233c4a368ddd7035d79df160",
+      "status": "draft",
+      "user_id": "demo-user-a",
+      "thread_id": "direct",
+      "category": "wifi",
+      "summary": "Campus-Demo will not connect.",
+      "steps_tried": [
+        "Enabled Wi-Fi"
+      ],
+      "service_status": "operational",
+      "status_profile": "normal",
+      "reference_ids": [
+        "GUIDE-WIFI"
+      ]
+    },
+    "sent": false
+  },
+  "archived_drafts": [
+    "drafts/direct-tools/DEMO-dd29a05a233c4a368ddd7035d79df160.json"
+  ]
+}

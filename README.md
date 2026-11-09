@@ -44,6 +44,27 @@ or `cp .env.example .env` on macOS/Linux.
   requests. See [llama.cpp function calling](https://github.com/ggml-org/llama.cpp/blob/master/docs/function-calling.md)
   for server setup with `--jinja`.
 
+The submitted logs were measured with `Qwen3-0.6B-Q4_K_M.gguf` and
+llama.cpp b12224. After downloading those two runtime files outside the
+repository, the exact server command was:
+
+```powershell
+llama-server.exe -m Qwen3-0.6B-Q4_K_M.gguf `
+  --alias Qwen3-0.6B-Q4_K_M --host 127.0.0.1 --port 18081 `
+  --jinja --reasoning on --reasoning-format deepseek `
+  --reasoning-budget 512 -ngl 99 -c 8192 -np 1 -n 850
+```
+
+The corresponding `.env` values are:
+
+```dotenv
+OPENAI_API_KEY=
+OPENAI_BASE_URL=http://127.0.0.1:18081/v1
+MODEL_NAME=Qwen3-0.6B-Q4_K_M
+HELPDESK_STORAGE_DIR=local-storage
+LANGSMITH_TRACING=false
+```
+
 ```powershell
 python helpdesk.py chat --user demo-user-a --thread wifi-1 --profile normal --trace
 ```

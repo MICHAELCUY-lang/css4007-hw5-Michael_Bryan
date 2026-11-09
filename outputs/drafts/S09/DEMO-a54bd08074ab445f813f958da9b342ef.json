@@ -1,0 +1,15 @@
+{
+  "ticket_id": "DEMO-a54bd08074ab445f813f958da9b342ef",
+  "status": "draft",
+  "user_id": "demo-user-a",
+  "thread_id": "s09",
+  "category": "wifi",
+  "summary": "The user enabled Wi-Fi and attempted to reconnect, but it still failed.",
+  "steps_tried": [
+    "Enabled Wi-Fi",
+    "Attempted to reconnect"
+  ],
+  "service_status": "not_checked",
+  "status_profile": "normal",
+  "reference_ids": []
+}
